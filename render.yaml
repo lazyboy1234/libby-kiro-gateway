@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: liberator-kiro-gw
+    runtime: python
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      # install kiro-cli — pulls latest release tarball for linux x86_64
+      curl -L https://kiro.dev/install.sh | bash
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: KIRO_API_KEY
+        sync: false
+      - key: PROXY_API_KEY
+        generateValue: true
+      - key: KIRO_MODEL
+        value: claude-opus-4.6
